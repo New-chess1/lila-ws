@@ -1,13 +1,12 @@
 package lila.ws
 
 import play.api.libs.json._
-import chess.format.{ FEN, Uci, UciCharPair }
-import chess.opening.{ FullOpening, FullOpeningDB }
+import chess.format.{FEN, Uci, UciCharPair}
+import chess.opening.{FullOpening, FullOpeningDB}
 import chess.Pos
-import chess.variant.{ Crazyhouse, Variant }
+import chess.variant.{Crazyhouse, NewChess1, Variant}
 import com.typesafe.scalalogging.Logger
 import cats.syntax.option._
-
 import ipc._
 
 object Chess {
@@ -96,6 +95,7 @@ object Chess {
         else None,
       drops = if (movable) game.situation.drops else Some(Nil),
       crazyData = game.situation.board.crazyData,
+      newChess1Data = game.situation.board.newChess1Data,
       chapterId = chapterId
     )
   }
@@ -138,6 +138,16 @@ object Chess {
       )
     }
     implicit val crazyhouseDataWriter: OWrites[chess.variant.Crazyhouse.Data] = OWrites { v =>
+      Json.obj("pockets" -> List(v.pockets.white, v.pockets.black))
+    }
+    implicit val newChess1PocketWriter: OWrites[NewChess1.Pocket] = OWrites { v =>
+      JsObject(
+        Crazyhouse.storableRoles.flatMap { role =>
+          Some(v.roles.count(role == _)).filter(0 < _).map { count => role.name -> JsNumber(count) }
+        }
+      )
+    }
+    implicit val newChess1DataWriter: OWrites[chess.variant.NewChess1.Data] = OWrites { v =>
       Json.obj("pockets" -> List(v.pockets.white, v.pockets.black))
     }
   }

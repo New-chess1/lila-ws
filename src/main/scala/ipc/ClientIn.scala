@@ -4,7 +4,7 @@ package ipc
 import chess.Color
 import chess.format.UciCharPair
 import chess.opening.FullOpening
-import chess.variant.Crazyhouse
+import chess.variant.{Crazyhouse, NewChess1}
 import lila.ws.Position
 import lila.ws.util.LilaJsObject.augment
 import play.api.libs.json._
@@ -146,6 +146,7 @@ object ClientIn {
       opening: Option[chess.opening.FullOpening],
       drops: Option[List[chess.Pos]],
       crazyData: Option[Crazyhouse.Data],
+      newChess1Data: Option[NewChess1.Data],
       chapterId: Option[ChapterId]
   ) extends ClientIn {
     def write =
@@ -170,6 +171,7 @@ object ClientIn {
                 JsString(drops.map(_.key).mkString)
               })
               .add("crazy" -> crazyData)
+              .add("newChess1" -> newChess1Data)
           )
           .add("ch" -> chapterId)
       )
