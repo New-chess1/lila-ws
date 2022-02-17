@@ -58,4 +58,6 @@ cd target/universal/ && unzip -o lila-ws-2.1.zip && cd ../..
 -Dnetty.useEpoll=true
 -Dcsrf.origin="https://newchess.fun"
 -Dstorm.secret="somethingElseInProd"
+-J-Xms128M
+-J-Xmx1024M
 ```
