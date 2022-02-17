@@ -35,3 +35,26 @@ Please [install it for your code editor](https://scalameta.org/scalafmt/docs/ins
 if you're going to contribute to this project.
 
 If you don't install it, please run `scalafmtAll` in the sbt console before committing.
+
+## debug
+
+```
+sbt -jvm-debug 5005 -Dconfig.file=target/universal/lila-ws-2.1/conf/application.ini run
+```
+
+## prod
+
+```
+sbt universal:packageBin
+cd target/universal/ && unzip -o lila-ws-2.1.zip && cd ../..
+./target/universal/lila-ws-2.1/bin/lila-ws
+```
+
+## newchess config
+
+`target/universal/lila-ws-2.1/conf/application.ini`
+
+```
+-Dnetty.useEpoll=true
+-Dcsrf.origin="https://newchess.fun"
+```
